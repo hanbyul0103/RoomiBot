@@ -14,7 +14,7 @@ module.exports = async (client, interaction) => {
         if (commandObject.devOnly) {
             if (!devs.includes(interaction.member.id)) {
                 interaction.reply({
-                    content: 'Only developers are allowed to run this command.',
+                    content: `당신은 이 명령어를 사용할 수 없습니다.`,
                     ephemeral: true,
                 });
 
@@ -25,7 +25,7 @@ module.exports = async (client, interaction) => {
         if (commandObject.testOnly) {
             if (!(interaction.guild.id === testServer)) {
                 interaction.reply({
-                    content: 'This command cannot be ran here.',
+                    content: '이 명령어는 이 서버에서 실행할 수 없습니다.',
                     ephemeral: true,
                 });
 
@@ -37,11 +37,11 @@ module.exports = async (client, interaction) => {
             for (const permission of commandObject.permissionsRequired) {
                 if (!interaction.memeber.permissions.has(permission)) {
                     interaction.reply({
-                        content: 'Not enough permissions',
+                        content: '당신의 권한이 충분하지 않습니다.',
                         ephemeral: true,
                     });
 
-                    break;
+                    return;
                 }
             }
         }
@@ -52,11 +52,11 @@ module.exports = async (client, interaction) => {
 
                 if (!bot.permissions.has(permission)) {
                     interaction.reply({
-                        content: "I don't have enough permissions.",
+                        content: "봇의 권한이 충분하지 않습니다.",
                         ephemeral: true,
                     });
 
-                    break;
+                    return;
                 }
             }
         }

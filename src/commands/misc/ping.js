@@ -1,5 +1,5 @@
 module.exports = {
-    name: 'ping',
+    name: '핑',
     description: '봇의 응답 속도(ms)를 알려줍니다.',
     devOnly: false,
     testOnly: false,

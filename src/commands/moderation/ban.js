@@ -1,21 +1,21 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
-    name: 'ban',
-    description: 'Bans a memeber.',
+    name: '밴',
+    description: '유저를 서버에서 영구 추방합니다.',
     devOnly: true,
     testOnly: false,
     deleted: false,
     options: [
         {
-            name: 'target-user',
-            description: 'the user to ban',
+            name: '유저',
+            description: '밴 할 유저',
             required: true,
             type: ApplicationCommandOptionType.Mentionable,
         },
         {
-            name: 'reason',
-            description: 'the reason for banning',
+            name: '이유',
+            description: '밴을 하는 이유',
             type: ApplicationCommandOptionType.String,
         },
     ],

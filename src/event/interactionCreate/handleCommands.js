@@ -12,7 +12,7 @@ module.exports = async (client, interaction) => {
         if (!commandObject) return;
 
         if (commandObject.devOnly) {
-            if (!devs.includes(interaction.memeber.id)) {
+            if (!devs.includes(interaction.member.id)) {
                 interaction.reply({
                     content: 'Only developers are allowed to run this command.',
                     ephemeral: true,
@@ -64,6 +64,6 @@ module.exports = async (client, interaction) => {
         await commandObject.callback(client, interaction);
 
     } catch (error) {
-        console.log(`There was an error running this command: ${error}`);
+        console.log(`[HandleCommands] There was an error running this command: ${error}`);
     }
 };

@@ -25,7 +25,7 @@ const colorMap = {
 module.exports = {
     name: '캘린더관리',
     description: '현재 달(UTC+9 기준)의 일정을 관리합니다.',
-    devOnly: true,
+    devOnly: false,
     testOnly: true,
     deleted: false,
     options: [

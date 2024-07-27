@@ -1,5 +1,6 @@
 const config = require('./config/config.json');
 const { Client, IntentsBitField } = require('discord.js');
+const eventHandler = require('./handlers/eventHandler');
 
 const client = new Client({
     intents: [
@@ -10,8 +11,6 @@ const client = new Client({
     ],
 });
 
-client.on('ready', (c) => {
-    console.log(`[!] ${c.user.tag} is ready.`);
-});
+eventHandler(client);
 
 client.login(config.token);

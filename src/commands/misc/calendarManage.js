@@ -1,6 +1,14 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
 const moment = require('moment-timezone');
-const { colorData, calendarData } = require('../../data/data.json');
+const fs = require('fs');
+const path = require('path');
+
+// 데이터 파일 경로 설정
+const dataFilePath = path.join(__dirname, '../../data/data.json');
+
+// 데이터 파일을 읽고 파싱
+let data = JSON.parse(fs.readFileSync(dataFilePath, 'utf-8'));
+const { colorData, calendarData } = data;
 
 module.exports = {
     name: '캘린더관리',
@@ -15,8 +23,8 @@ module.exports = {
             required: true,
             type: ApplicationCommandOptionType.String,
             choices: [
-                { name: '추가', value: 'add', },
-                { name: '삭제', value: 'remove', },
+                { name: '추가', value: 'add' },
+                { name: '삭제', value: 'remove' },
             ],
         },
         {
@@ -25,14 +33,14 @@ module.exports = {
             required: true,
             type: ApplicationCommandOptionType.String,
             choices: [
-                { name: '엘리베이터의 주', value: 'e', },
-                { name: '자유의 날', value: 'f', },
+                { name: '엘리베이터의 주', value: 'e' },
+                { name: '자유의 날', value: 'f' },
             ],
         },
         {
             name: '날짜',
             description: '날짜를 입력하세요',
-            require: true,
+            required: true,
             type: ApplicationCommandOptionType.Number,
         },
     ],
@@ -52,10 +60,12 @@ module.exports = {
         if (action === "add") {
             if (!['e', 'f'].includes(event)) {
                 await interaction.reply("유효하지 않은 이벤트 타입입니다.");
+                return;
             }
 
             if (!/^\d+$/.test(day) || day < 1 || day > 31) {
                 await interaction.reply("유효하지 않은 날짜입니다.");
+                return;
             }
 
             if (event === 'e') {
@@ -70,9 +80,10 @@ module.exports = {
         } else if (action === "remove") {
             if (!['e', 'f'].includes(event)) {
                 await interaction.reply("유효하지 않은 이벤트 타입입니다.");
+                return;
             }
 
-            const colorToRemove = colorData[event];
+            const colorToRemove = colorData.find(item => Object.keys(item)[0] === event)[event];
             let removed = removeEvents(event, colorToRemove);
 
             if (removed) {
@@ -81,6 +92,9 @@ module.exports = {
                 await interaction.reply("해당 이벤트 타입의 이벤트가 없습니다.");
             }
         }
+
+        // 변경된 데이터 저장
+        saveData();
     },
 };
 
@@ -93,7 +107,7 @@ function addEventE(year, month, day) {
         if (startDate.day() !== 0 && startDate.day() !== 6) { // 주말을 제외한 날짜
             const dateStr = startDate.format('YYYY-MM-DD');
             if (!calendarData[dateStr]) calendarData[dateStr] = [];
-            calendarData[dateStr].push({ color: colorData['e'] });
+            calendarData[dateStr].push({ color: colorData.find(item => item.e)?.e });
             daysAdded++;
         }
         startDate.add(1, 'day');
@@ -104,7 +118,7 @@ function addEventE(year, month, day) {
 function addEventF(year, month, day) {
     const date = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     if (!calendarData[date]) calendarData[date] = [];
-    calendarData[date].push({ color: colorData['f'], type: 'circle' });
+    calendarData[date].push({ color: colorData.find(item => item.f)?.f, type: 'circle' });
 }
 
 // 이벤트 삭제
@@ -124,4 +138,9 @@ function removeEvents(event, colorToRemove) {
     }
 
     return removed;
+}
+
+// 변경된 데이터 저장 함수
+function saveData() {
+    fs.writeFileSync(dataFilePath, JSON.stringify({ colorData, calendarData }, null, 2), 'utf-8');
 }

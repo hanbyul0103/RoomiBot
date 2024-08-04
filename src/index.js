@@ -15,18 +15,17 @@ const client = new Client({
 eventHandler(client);
 
 client.on('guildMemberAdd', async member => {
-    console.log('guildMemberAdd 이벤트가 호출되었습니다');
     const channelID = '1265224199509901374';
     const channel = client.channels.cache.get(channelID);
     if (channel) {
-        console.log(`Sending welcome message to ${member.user.tag}`);
-        channel.send(`안녕하세요, ${member}님! 닉네임을 \`본명 (학년)\`으로 바꿔주세요.`);
+        channel.send(`${member}\n안녕하세요! 닉네임을 \`본명 (학년)\`으로 바꿔주세요.`);
     }
 
-    const role = member.guild.roles.cache.find(role => role.name === '1학년'); // 'Newbie'는 역할 이름입니다.
-    if (role) {
-        console.log(`Assigning role '1학년' to ${member.user.tag}`);
-        await member.roles.add(role);
+    const classRole = member.guild.roles.cache.find(role => role.name === '1학년'); // 'Newbie'는 역할 이름입니다.
+    const studentRole = member.guild.roles.cache.find(role => role.name === "학생");
+    if (classRole && studentRole) {
+        await member.roles.add(classRole);
+        await member.roles.add(studentRole);
     }
 });
 

@@ -1,7 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
 const path = require('path');
 const fs = require('fs');
-const { registerFont } = require('canvas');
+const { createCanvas, registerFont } = require('canvas');
+const moment = require('moment-timezone');
 const { colorData, calendarData } = require('../../data/data.json');
 
 // 폰트 등록
@@ -12,6 +13,13 @@ const scaleFactor = 3;
 const titleHeight = 140 * scaleFactor; // 제목의 공간을 140으로 설정
 const headerHeight = 100 * scaleFactor;
 
+// colorData를 객체 형태로 변환합니다.
+const colorMap = colorData.reduce((acc, item) => {
+    const key = Object.keys(item)[0];
+    acc[key] = item[key];
+    return acc;
+}, {});
+
 module.exports = {
     name: '캘린더',
     description: '현재 달(UTC+9 기준)의 일정을 보여줍니다.',
@@ -21,6 +29,10 @@ module.exports = {
     //options: ,
 
     callback: async (client, interaction) => {
+        const timeZone = 'Asia/Seoul';
+
+        const today = moment().tz(timeZone);
+
         // 캘린더 생성 및 이미지 파일로 저장
         try {
             await generateCalendarImage(interaction, today);
@@ -90,7 +102,7 @@ async function generateCalendarImage(interaction, today) {
 }
 
 // 요일 헤더 그리기
-function drawWeekHeaders(ctx, scaleFactor, headerHeight, cellSize) {
+function drawWeekHeaders(ctx, scaleFactor, cellSize) {
     const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
     const headerBackgroundColor = 'lightgray';
     let xOffset = 0;
@@ -128,7 +140,8 @@ function drawDays(ctx, startOfMonth, daysInMonth, startDay, cellSize) {
                 const dayEvents = calendarData[currentDateStr] || [];
 
                 // 배경색 설정
-                let fillColor = (currentDate.day() === 0 ? colorData['SUNDAY'] : (currentDate.day() === 6 ? colorData['SATURDAY'] : 'white'));
+                let fillColor = (currentDate.day() === 0 ? colorMap["SUNDAY"] : (currentDate.day() === 6 ? colorMap["SATURDAY"] : 'white'));
+                console.log(`${fillColor} : ${currentDate.day()}`);
                 ctx.fillStyle = fillColor;
                 ctx.fillRect(xOffset, yOffset, cellSize, cellSize);
 
@@ -167,7 +180,7 @@ function drawEvents(ctx, events, xOffset, yOffset, cellSize) {
     // 이후 동그라미 이벤트를 그립니다.
     events.forEach(event => {
         if (event.type === 'circle') {
-            ctx.strokeStyle = colorData['f'];
+            ctx.strokeStyle = colorMap['f'];
             ctx.lineWidth = 4;
             ctx.beginPath();
             const circleRadius = cellSize / 3;

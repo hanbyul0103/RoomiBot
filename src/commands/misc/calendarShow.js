@@ -23,7 +23,7 @@ const colorMap = colorData.reduce((acc, item) => {
 module.exports = {
     name: '캘린더',
     description: '현재 달(UTC+9 기준)의 일정을 보여줍니다.',
-    devOnly: false,
+    devOnly: true,
     testOnly: true,
     deleted: false,
     //options: ,

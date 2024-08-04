@@ -3,7 +3,7 @@ const { ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.j
 module.exports = {
     name: '투표',
     description: '이벤트 날짜를 추천합니다.',
-    devOnly: false,
+    devOnly: true,
     testOnly: true,
     deleted: false,
     options: [

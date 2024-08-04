@@ -3,7 +3,7 @@ const { ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.j
 module.exports = {
     name: '킥',
     description: '유저를 서버에서 추방합니다.',
-    devOnly: false,
+    devOnly: true,
     testOnly: false,
     deleted: false,
     options: [

@@ -20,26 +20,24 @@ async function fetchAllMembers(guild) {
         let firstGradeRole = guild.roles.cache.find(role => role.name === '1학년');
         let secondGradeRole = guild.roles.cache.find(role => role.name === '2학년');
         let thirdGradeRole = guild.roles.cache.find(role => role.name === '3학년');
+        let student = guild.roles.cache.find(role => role.name === "학생");
+
+        const gradeRoles = [firstGradeRole, secondGradeRole, thirdGradeRole];
 
         // 멤버 리스트를 로그에 출력
         members.forEach(async member => {
             const nickname = member.nickname || 'None';
 
+            if (!member.roles.cache.has(student.id)) {
+                await member.roles.add(student);
+            }
+
             if (nickname.includes('1학년')) {
-                if (!member.roles.cache.has(firstGradeRole.id)) {
-                    await member.roles.add(firstGradeRole);
-                    console.log(`Added '1학년' role to ${member.user.tag}`);
-                }
+                await updateRoles(member, firstGradeRole, gradeRoles);
             } else if (nickname.includes('2학년')) {
-                if (!member.roles.cache.has(secondGradeRole.id)) {
-                    await member.roles.add(secondGradeRole);
-                    console.log(`Added '2학년' role to ${member.user.tag}`);
-                }
+                await updateRoles(member, secondGradeRole, gradeRoles);
             } else if (nickname.includes('3학년')) {
-                if (!member.roles.cache.has(thirdGradeRole.id)) {
-                    await member.roles.add(thirdGradeRole);
-                    console.log(`Added '3학년' role to ${member.user.tag}`);
-                }
+                await updateRoles(member, thirdGradeRole, gradeRoles);
             }
         });
 
@@ -47,5 +45,25 @@ async function fetchAllMembers(guild) {
         console.log(`Total members in ${guild.name}: ${members.size}`);
     } catch (error) {
         console.error('Error fetching members:', error);
+    }
+}
+
+async function updateRoles(member, targetRole, allRoles) {
+    try {
+        // 대상 역할 추가
+        if (!member.roles.cache.has(targetRole.id)) {
+            await member.roles.add(targetRole);
+            console.log(`Added '${targetRole.name}' role to ${member.user.tag}`);
+        }
+
+        // 다른 역할 제거
+        for (const role of allRoles) {
+            if (role.id !== targetRole.id && member.roles.cache.has(role.id)) {
+                await member.roles.remove(role);
+                console.log(`Removed '${role.name}' role from ${member.user.tag}`);
+            }
+        }
+    } catch (error) {
+        console.error('Error updating roles for', member.user.tag, ':', error);
     }
 }

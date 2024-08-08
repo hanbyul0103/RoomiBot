@@ -111,7 +111,7 @@ module.exports = {
     },
 };
 
-async function closeChannel(channel, userid) {
+async function closeChannel(channel, userId) {
     const closeEmbed = new EmbedBuilder()
         .setTitle('채널이 닫혔습니다.')
         .setDescription('이 채널은 더 이상 볼 수 없습니다.')
@@ -119,8 +119,13 @@ async function closeChannel(channel, userid) {
 
     await channel.send({ embeds: [closeEmbed] });
 
-    await channel.permissionOverwrites.edit(userid, {
+    await channel.permissionOverwrites.edit(userId, {
         ViewChannel: false,
         SendMessages: false,
     });
+
+    var channelName = channel.name;
+
+    await channel.edit({ name: `🔒${channelName}` });
+    console.log(channel.name);
 }

@@ -85,9 +85,12 @@ module.exports = {
                 if (role) {
                     const interactionUser = await interaction.guild.members.fetch(buttonInteraction.user.id);
 
+                    const currentTime = new Date().toLocaleTimeString('ko-KR', { hour12: false });
+
                     const inChannelEmbed = new EmbedBuilder()
-                        .setTitle(`안녕하세요, ${interactionUser.nickname}님!\n문의 & 건의 사항을 편하게 말씀해주세요`)
+                        .setTitle(`안녕하세요, ${interactionUser.nickname}님!\n문제가 해결되었다면 아래의 닫기 버튼을 눌러주세요`)
                         .setFields()
+                        .setFooter({ text: `${currentTime}` })
                         .setColor('#FFFFFF');
 
                     const buttons = close.map(({ name, emoji }) =>
@@ -103,7 +106,7 @@ module.exports = {
                     await newChannel.send({ content: `${role}, ${buttonInteraction.user}`, embeds: [inChannelEmbed], components: [button] });
                 }
             } else if (buttonInteraction.customId === '닫기') {
-                await closeChannel(buttonInteraction.channel, buttonInteraction.user.id);
+                await closeChannel(buttonInteraction.channel);
             }
         }
 
@@ -111,21 +114,8 @@ module.exports = {
     },
 };
 
-async function closeChannel(channel, userId) {
-    const closeEmbed = new EmbedBuilder()
-        .setTitle('채널이 닫혔습니다.')
-        .setDescription('이 채널은 더 이상 볼 수 없습니다.')
-        .setColor('#FF0000');
+async function closeChannel(channel) {
+    await channel.delete();
 
-    await channel.send({ embeds: [closeEmbed] });
-
-    await channel.permissionOverwrites.edit(userId, {
-        ViewChannel: false,
-        SendMessages: false,
-    });
-
-    var channelName = channel.name;
-
-    await channel.edit({ name: `🔒${channelName}` });
-    console.log(channel.name);
+    console.log(`${channel.name} has been deleted`);
 }

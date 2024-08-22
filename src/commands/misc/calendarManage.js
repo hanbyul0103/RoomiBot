@@ -15,7 +15,7 @@ module.exports = {
     description: '현재 달(UTC+9 기준)의 일정을 관리합니다.',
     devOnly: true,
     testOnly: true,
-    deleted: false,
+    deleted: true,
     options: [
         {
             name: '행동',

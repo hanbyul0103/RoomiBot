@@ -3,7 +3,7 @@ module.exports = {
     description: '봇의 응답 속도(ms)를 알려줍니다.',
     devOnly: false,
     testOnly: false,
-    deleted: false,
+    deleted: true,
     //options: ,
 
     callback: async (client, interaction) => {

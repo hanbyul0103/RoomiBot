@@ -5,7 +5,7 @@ module.exports = {
     description: '유저를 서버에서 영구 추방합니다.',
     devOnly: true,
     testOnly: false,
-    deleted: false,
+    deleted: true,
     options: [
         {
             name: '유저',

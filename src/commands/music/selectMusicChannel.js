@@ -15,5 +15,7 @@ module.exports = {
 
     callback: async (client, interaction) => {
         const channelId = interaction.options.get("채널")?.value;
+
+        await interaction.reply(`<#${channelId}> 채널로 설정되었습니다.`);
     }
 }

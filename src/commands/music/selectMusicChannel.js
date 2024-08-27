@@ -1,5 +1,7 @@
+const { ApplicationCommandOptionType } = require("discord.js");
+
 module.exports = {
-    name: '노래신청',
+    name: '노래신청채널',
     description: '노래 신청을 받을 채널을 선택합니다.',
     devOnly: true,
     testOnly: true,

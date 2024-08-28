@@ -6,6 +6,6 @@ module.exports = {
     deleted: false,
 
     callback: async (client, interaction) => {
-
+        interaction.reply("플레이리스트에 적용");
     }
 };

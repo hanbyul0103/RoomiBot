@@ -29,6 +29,13 @@ client.on('guildMemberAdd', async member => {
     }
 });
 
+client.on('messageCreate', message => {
+    if (message.channel.id === "")
+        if (!message.author.bot) {
+            
+        }
+});
+
 cron.schedule('0 0 1 * *', () => {
     const channelID = '1263159851740172479';
     const channel = client.channels.cache.get(channelID);

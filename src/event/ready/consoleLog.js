@@ -4,7 +4,7 @@ module.exports = (client) => {
     console.log(`[!] ${client.user.tag} is ready`);
 
     client.user.setPresence({
-        activities: [{ name: "/캘린더", type: ActivityType.Playing }],
+        activities: [{ name: "요청", type: ActivityType.Listening }],
         status: 'online'
     });
 };

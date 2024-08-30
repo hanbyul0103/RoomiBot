@@ -14,43 +14,43 @@ const client = new Client({
 
 eventHandler(client);
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'your_username',
-    password: 'your_password',
-    database: 'your_database'
-});
+// const connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'your_username',
+//     password: 'your_password',
+//     database: 'your_database'
+// });
 
-const spotifyApi = new SpotifyWebApi({
-    clientId: 'your_spotify_client_id',
-    clientSecret: 'your_spotify_client_secret'
-});
+// const spotifyApi = new SpotifyWebApi({
+//     clientId: 'your_spotify_client_id',
+//     clientSecret: 'your_spotify_client_secret'
+// });
 
-async function authenticateSpotify() {
-    try {
-        const data = await spotifyApi.clientCredentialsGrant();
-        spotifyApi.setAccessToken(data.body['access_token']);
-        console.log('스포티파이 인증 성공');
-    } catch (error) {
-        console.error('스포티파이 인증 실패:', error);
-    }
-}
+// async function authenticateSpotify() {
+//     try {
+//         const data = await spotifyApi.clientCredentialsGrant();
+//         spotifyApi.setAccessToken(data.body['access_token']);
+//         console.log('스포티파이 인증 성공');
+//     } catch (error) {
+//         console.error('스포티파이 인증 실패:', error);
+//     }
+// }
 
-async function isSongExplicit(title, artist) {
-    try {
-        const result = await spotifyApi.searchTracks(`track:${title} artist:${artist}`);
-        if (result.body.tracks.items.length > 0) {
-            const track = result.body.tracks.items[0];
-            return track.explicit;
-        } else {
-            console.log('노래를 찾을 수 없습니다.');
-            return null;
-        }
-    } catch (error) {
-        console.error('스포티파이 검색 중 오류 발생:', error);
-        return null;
-    }
-}
+// async function isSongExplicit(title, artist) {
+//     try {
+//         const result = await spotifyApi.searchTracks(`track:${title} artist:${artist}`);
+//         if (result.body.tracks.items.length > 0) {
+//             const track = result.body.tracks.items[0];
+//             return track.explicit;
+//         } else {
+//             console.log('노래를 찾을 수 없습니다.');
+//             return null;
+//         }
+//     } catch (error) {
+//         console.error('스포티파이 검색 중 오류 발생:', error);
+//         return null;
+//     }
+// }
 
 client.on('guildMemberAdd', async member => {
     const channelID = '1265224199509901374';

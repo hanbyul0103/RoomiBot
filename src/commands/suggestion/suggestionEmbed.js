@@ -35,7 +35,7 @@ module.exports = {
 
         const ticketEmbed = new EmbedBuilder()
             .setTitle('기숙사 내 파손된 물품 문의 & 건의사항')
-            .setDescription('문의 시 시설관리, 학습관리, 생활지도 중 알맞은 버튼을 눌러주세요.\n그 외의 내용은 기타 버튼을 눌러주세요.')
+            .setDescription('문의 시 시설관리, 학습관리, 생활지도 중 알맞은 버튼을 눌러주세요.\n그 외의 내용은 기타 버튼을 눌러주세요.\n닫기 버튼을 누르면 생성된 채널이 삭제됩니다.')
             .setColor('#FFFFFF');
 
         const buttons = choices.map(({ name, emoji }) =>

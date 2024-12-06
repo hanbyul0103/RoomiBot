@@ -82,6 +82,11 @@ module.exports = {
                     await newChannel.setParent(categoryId, { lockPermissions: false });
                 }
 
+                await buttonInteraction.reply({
+                    content: `<#${newChannel.id}> 채널로 이동해주세요.`,
+                    ephemeral:  true,
+                })
+
                 if (role) {
                     const interactionUser = await interaction.guild.members.fetch(buttonInteraction.user.id);
 

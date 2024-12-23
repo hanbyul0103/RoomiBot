@@ -3,7 +3,7 @@ module.exports = {
     description: '학년에 맞게 역할을 부여합니다.',
     devOnly: true,
     testOnly: true,
-    deleted: false,
+    deleted: true,
 
     callback: async (client, interaction) => {
         client.guilds.cache.forEach(guild => {

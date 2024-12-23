@@ -5,7 +5,7 @@ module.exports = {
   description: "점호 위치를 확인합니다",
   devOnly: true,
   testOnly: true,
-  deleted: false,
+  deleted: true,
 
   callback: async (client, interaction) => {
     for (let i = 0; i < regidents.size; ++i) {

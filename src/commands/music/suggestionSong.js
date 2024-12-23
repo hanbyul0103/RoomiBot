@@ -5,7 +5,7 @@ module.exports = {
     description: '노래 신청을 받을 채널을 선택합니다.',
     devOnly: true,
     testOnly: true,
-    deleted: false,
+    deleted: true,
     options: [
         {
             name: '노래',

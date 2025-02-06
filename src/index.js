@@ -22,6 +22,7 @@ client.on('guildMemberAdd', async member => {
 
     const classRole = member.guild.roles.cache.find(role => role.name === '1학년');
     const studentRole = member.guild.roles.cache.find(role => role.name === "재학생");
+
     if (classRole && studentRole) {
         await member.roles.add(classRole);
         await member.roles.add(studentRole);

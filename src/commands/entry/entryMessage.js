@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const entryData = require("./entryData.json");
+const entryData = require("./entry.json");
 
 module.exports = {
     name: "입장 메시지",

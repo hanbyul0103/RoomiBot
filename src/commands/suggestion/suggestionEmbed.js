@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType, ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionsBitField, TextChannel } = require('discord.js');
+const { ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionsBitField, TextChannel } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 
 const choices = [
@@ -13,7 +13,7 @@ const close = [
 ];
 
 module.exports = {
-    name: '티켓',
+    name: 'ticket',
     description: '티켓을 업로드 할 채널을 선택하고 티켓을 보냅니다.',
     devOnly: true,
     testOnly: true,
@@ -23,7 +23,7 @@ module.exports = {
             name: '채널',
             description: '등록할 채널의 이름',
             required: true,
-            type: ApplicationCommandOptionType.Channel,
+            type: 7,
         },
     ],
 
@@ -84,7 +84,7 @@ module.exports = {
 
                 await buttonInteraction.reply({
                     content: `<#${newChannel.id}> 채널로 이동해주세요.`,
-                    ephemeral:  true,
+                    ephemeral: true,
                 })
 
                 if (role) {

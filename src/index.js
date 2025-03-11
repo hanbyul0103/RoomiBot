@@ -13,21 +13,4 @@ const client = new Client({
 
 eventHandler(client);
 
-client.on('guildMemberAdd', async member => {
-    const channelID = '1265224199509901374';
-    const channel = client.channels.cache.get(channelID);
-    if (channel) {
-        channel.send(`${member}\n안녕하세요! 닉네임을 \`본명 (학년)\`으로 바꿔주세요.`);
-    }
-
-    const classRole = member.guild.roles.cache.find(role => role.name === '1학년');
-    const studentRole = member.guild.roles.cache.find(role => role.name === "재학생");
-
-    if (classRole && studentRole) {
-        await member.roles.add(classRole);
-        await member.roles.add(studentRole);
-    }
-});
-
-
 client.login(config.token);

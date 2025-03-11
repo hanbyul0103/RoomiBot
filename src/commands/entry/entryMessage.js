@@ -1,8 +1,5 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const entryData = require("./entry.json");
-
 module.exports = {
-    name: "입장 메시지",
+    name: "entry-message",
     description: "입장 메시지를 보낼 채널을 선택합니다",
     devOnly: true,
     testOnly: false,
@@ -12,16 +9,16 @@ module.exports = {
             name: "채널",
             description: "입장 메시지를 보낼 채널",
             required: true,
-            type: ApplicationCommandOptionType.Channel,
+            type: 7,
         },
     ],
 
     callback: async (client, interaction) => {
-        const channelId = interaction.options.get("채널")?.value;
-        const channel = await client.channels.fetch(channelId);
+        const channelId = interaction.options.getChannel("채널")?.id;
+        const channel = client.channels.cache.get(channelId) || await client.channels.fetch(channelId);
 
-        await interaction.reply(`<#${channelId}> 채널로 설정되었습니다.`);
+        await interaction.reply({ content: `<#${channelId}> 채널로 설정되었습니다.`, ephemeral: true });
 
-        await channel.send(`<@${interaction}>`);
+        await channel.send(`<@${interaction.user.id}>`);
     },
 };

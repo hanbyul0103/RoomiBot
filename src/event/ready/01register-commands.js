@@ -11,45 +11,46 @@ module.exports = async (client) => {
         for (const localCommand of localCommands) {
             const { name, description, options } = localCommand;
 
-            const existingCommand = await applicationCommands.cache.find(
-                (cmd) => cmd.name === name
-            );
+            if (!name || typeof name !== "string") {
+                console.error(`[X] Invalid command name detected:`, localCommand);
+                continue;
+            }
+
+            const existingCommand = applicationCommands.cache.find(cmd => cmd.name === name);
 
             if (existingCommand) {
                 if (localCommand.deleted) {
                     await applicationCommands.delete(existingCommand.id);
-
                     console.log(`[D] Deleted command "${name}".`);
-
                     continue;
                 }
 
                 if (areCommandsDifferent(existingCommand, localCommand)) {
                     await applicationCommands.edit(existingCommand.id, {
-                        description,
-                        options,
+                        name, // 기존 코드에는 없던 `name` 추가
+                        description: description || "No description provided",
+                        options: options || [], // `options`가 없으면 빈 배열 전달
                     });
 
                     console.log(`[E] Edited command "${name}"`);
                 }
             } else {
                 if (localCommand.deleted) {
-                    console.log(`[S] Skipping registring command "${name}" as it's set to delete.`);
-
+                    console.log(`[S] Skipping registration of command "${name}" as it's set to delete.`);
                     continue;
                 }
 
                 await applicationCommands.create({
                     name,
-                    description,
-                    options,
+                    description: description || "No description provided",
+                    options: options || [],
                 });
 
-                console.log(`[R] Registered command "${name}."`);
+                console.log(`[R] Registered command "${name}".`);
             }
         }
 
     } catch (error) {
-        console.log(`[X] There was an error: ${error}`);
+        console.error(`[X] There was an error:`, error);
     }
 };

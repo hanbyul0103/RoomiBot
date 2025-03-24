@@ -50,3 +50,6 @@ module.exports = {
         await channel.send({ embeds: [ticketEmbed], components: [row] });
     },
 };
+
+module.exports.choices = choices;
+module.exports.close = close;

@@ -1,7 +1,7 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionsBitField, ChannelType, EmbedBuilder } = require('discord.js');
 const { choices, close } = require("../../commands/suggestion/suggestionEmbed");
 
-module.exports = async (client, interaction) => {
+module.exports = async (interaction) => {
     if (!interaction.isButton()) return;
 
     const userChoice = choices.find(({ name }) => name === interaction.customId);

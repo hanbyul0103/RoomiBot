@@ -1,4 +1,4 @@
-const { ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionsBitField, TextChannel } = require('discord.js');
+const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 
 const choices = [
@@ -48,79 +48,5 @@ module.exports = {
 
         const row = new ActionRowBuilder().addComponents(buttons);
         await channel.send({ embeds: [ticketEmbed], components: [row] });
-
-        const handleButtonInteraction = async (buttonInteraction) => {
-            if (!buttonInteraction.isButton()) return;
-
-            const userChoice = choices.find(({ name }) => name === buttonInteraction.customId);
-            if (userChoice) {
-                const guild = interaction.guild;
-                const role = guild.roles.cache.find(role => role.name === userChoice.role);
-
-                const permissionOverwrites = [
-                    {
-                        id: guild.id,
-                        deny: [PermissionsBitField.Flags.ViewChannel],
-                    },
-                    {
-                        id: buttonInteraction.user.id,
-                        allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages],
-                    },
-                ];
-
-                const newChannel = await guild.channels.create({
-                    name: `${userChoice.name} 문의`,
-                    type: TextChannel,
-                    reason: '채팅 생성',
-                    permissionOverwrites
-                });
-
-                // 카테고리 이동
-                const categoryId = '1270048421373280367';
-
-                if (categoryId) {
-                    await newChannel.setParent(categoryId, { lockPermissions: false });
-                }
-
-                await buttonInteraction.reply({
-                    content: `<#${newChannel.id}> 채널로 이동해주세요.`,
-                    ephemeral: true,
-                })
-
-                if (role) {
-                    const interactionUser = await interaction.guild.members.fetch(buttonInteraction.user.id);
-
-                    const currentTime = new Date().toLocaleTimeString('ko-KR', { hour12: false });
-
-                    const inChannelEmbed = new EmbedBuilder()
-                        .setTitle(`안녕하세요, ${interactionUser.nickname}님!\n문제가 해결되었다면 아래의 닫기 버튼을 눌러주세요`)
-                        .setFields()
-                        .setFooter({ text: `${currentTime}` })
-                        .setColor('#FFFFFF');
-
-                    const buttons = close.map(({ name, emoji }) =>
-                        new ButtonBuilder()
-                            .setCustomId(name)
-                            .setLabel(name)
-                            .setStyle(ButtonStyle.Primary)
-                            .setEmoji(emoji)
-                    );
-
-                    const button = new ActionRowBuilder().addComponents(buttons);
-
-                    await newChannel.send({ content: `${role}, ${buttonInteraction.user}`, embeds: [inChannelEmbed], components: [button] });
-                }
-            } else if (buttonInteraction.customId === '닫기') {
-                await closeChannel(buttonInteraction.channel);
-            }
-        }
-
-        client.on('interactionCreate', handleButtonInteraction);
     },
 };
-
-async function closeChannel(channel) {
-    await channel.delete();
-
-    console.log(`${channel.name} has been deleted`);
-}

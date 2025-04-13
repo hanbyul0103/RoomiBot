@@ -28,5 +28,7 @@ module.exports = async (client) => {
             console.log("재학생 채팅 입력 권한 끔");
             songChannel.closeChannel(client);
         }
+
+        console.log(`Roomi Day!!!!!!!!!!!------- ${day}`);
     })
 };
